@@ -1,12 +1,30 @@
 // Variables
-$website-width: 60rem;
-$font-size: 14px;
-$main-color: #0098da;
-$main-color-light: #91d8f7;
-$main-color-dark: #472E93;
+$website-width: 80%;
+$website-height: 80%;
+$font-size: 32px;
+$main-color-light: #00FF41;
+$main-color: #008F11;
+$main-color-dark: #003B00;
 $light-color: #f4f4f4;
 $medium-color: #ccc;
 $dark-color: #333;
 $white: #fff;
-$black: #000;
+$black: #0D0208;
 $footer-height: 5rem;
+
+// General Styles
+*{
+  margin: 0;
+  padding: 0;
+  font-size: $font-size;
+  font-family: 'VT323', monospace;
+}
+
+body{
+  position: relative;
+  background: $black;
+  color: $main-color-light;
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow: hidden;
+}

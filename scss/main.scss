@@ -1,4 +1,34 @@
 @import 'config';
 @import 'utilities';
 
+// Chat History
+#chat-history{
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 80vh;
+}
+
+// Send Message
+#send-message{
+  position: fixed;
+  bottom: 1rem;
+  width: $website-width;
+  display: flex;
+  align-items: baseline;
+
+  #input-message{
+    width: 90%;
+    height: 1rem;
+    color: $main-color-light;
+    caret-color: $main-color-light;
+    
+    overflow-x: scroll;
+    white-space: nowrap;
+    border: none;
+    outline: none;
+    background: none;
+    resize: none;
+  }
+}
+
 @import 'media';

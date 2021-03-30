@@ -3,12 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/main.css">
-  <title>IRC Chat</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="css/main.css"> -->
+  <style>
+    *{margin:0;padding:0;font-size:32px;font-family:'VT323', monospace}body{position:relative;background:#0D0208;color:#00FF41;min-height:100vh;line-height:1.6;overflow:hidden}.container{overflow:hidden;width:80%;margin:1rem auto}.message{margin-bottom:1rem}#chat-history{overflow:hidden;overflow-y:scroll;height:80vh}#send-message{position:fixed;bottom:1rem;width:80%;display:flex;align-items:baseline}#send-message #input-message{width:90%;height:1rem;color:#00FF41;caret-color:#00FF41;overflow-x:scroll;white-space:nowrap;border:none;outline:none;background:none;resize:none}
+  </style>
+  <title>ChatPrompt</title>
 </head>
 <body>
   <div class="container">
-    <h1>test</h1>
+    <div id="chat-history">
+      <!-- <p class="message">> <span class="message-name">Kaleb</span>: <span class="message-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci nisi accusamus qui facilis sapiente commodi, temporibus minima dicta odit neque.</span></p>
+      <p class="message">> <span class="message-name">Kaleb</span>: <span class="message-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci nisi accusamus qui facilis sapiente commodi, temporibus minima dicta odit neque.</span></p>
+      <p class="message">> <span class="message-name">Kaleb</span>: <span class="message-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci nisi accusamus qui facilis sapiente commodi, temporibus minima dicta odit neque.</span></p>
+      <p class="message">> <span class="message-name">Kaleb</span>: <span class="message-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci nisi accusamus qui facilis sapiente commodi, temporibus minima dicta odit neque.</span></p>
+      <p class="message">> <span class="message-name">Kaleb</span>: <span class="message-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci nisi accusamus qui facilis sapiente commodi, temporibus minima dicta odit neque.</span></p>
+      <p class="message">> <span class="message-name">Kaleb</span>: <span class="message-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci nisi accusamus qui facilis sapiente commodi, temporibus minima dicta odit neque.</span></p> -->
+    </div>
+    <form id="send-message" action="">
+      <pre>ENTER: </pre><textarea id="input-message"></textarea>
+    </form>
   </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let socket = io();
+
+    let messages = document.getElementById('chat-history')
+    let form = document.getElementById('send-message')
+    let input = document.getElementById('input-message')
+    
+    document.onkeydown = function(e){
+      if(e.keyCode == 13 && input.value){
+        e.preventDefault()
+        socket.emit('chat message', input.value)
+        input.value = '';
+      }
+    }
+
+    socket.on('chat message', function(msg) {
+      let item = document.createElement('p')
+      item.classList = "message"
+      item.textContent = '> ' + msg
+      console.log(item)
+      messages.appendChild(item)
+      window.scrollTo(0, document.body.scrollHeight)
+    })
+  </script>
 </body>
 </html>
