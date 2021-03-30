@@ -1,24 +1,36 @@
 let socket = io()
 
+let name = 'NA'
+
+let nameForm = document.getElementById('enter-name')
+let nameInput = document.getElementById('input-name')
 let messages = document.getElementById('chat-history')
-let form = document.getElementById('send-message')
-let input = document.getElementById('input-message')
+let messageForm = document.getElementById('send-message')
+let messageInput = document.getElementById('input-message')
 
 document.onkeydown = function(e){
-  if(e.keyCode == 13 && input.value){
+  if(e.key == 'Enter' && nameInput.value){
     e.preventDefault()
-    socket.emit('chat message', input.value)
-    input.value = '';
-  } else if(input.value) socket.emit('typing')
+    name = nameInput.value
+    nameInput.value = ''
+
+    nameForm.style.display = 'none'
+    messages.style.display = 'block'
+    messageForm.style.display = 'flex'
+  } else if(e.key == 'Enter' && messageInput.value){
+    e.preventDefault()
+    socket.emit('chat message', name, messageInput.value,)
+    messageInput.value = '';
+  } else if(messageInput.value) socket.emit('typing')
 }
 
-socket.on('chat message', function(msg) {
+socket.on('chat message', function(name, msg) {
   if(messages.lastChild.classList == 'typing'){
     messages.lastChild.remove()
   }
   let item = document.createElement('p')
   item.classList = "message"
-  item.textContent = '> ' + msg
+  item.textContent = '> ' + name + ': ' + msg
   messages.appendChild(item)
   messages.scrollTo(0, messages.scrollHeight)
 })

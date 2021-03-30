@@ -1,6 +1,18 @@
 @import 'config';
 @import 'utilities';
 
+// Enter Name
+#enter-name{
+  @include input-form;
+  color: $main-color;
+
+  #input-name{
+    @include input-field;
+    color: $main-color;
+    caret-color: $main-color;
+  }
+}
+
 // Chat History
 #chat-history{
   position: relative;
@@ -11,29 +23,18 @@
   margin-top: 2rem;
   padding: 0.5rem;
   border: 2px solid $main-color;
+  display: none;
 }
 
 // Send Message
 #send-message{
-  margin: 0.5rem 0;
-  width: $website-width;
-  display: flex;
-  align-items: baseline;
+  @include input-form;
+  display: none;
 
   #input-message{
-    width: 90%;
-    height: 1rem;
+    @include input-field;
     color: $main-color-light;
     caret-color: $main-color-light;
-    
-    // overflow-x: scroll;
-    // overflow-y: hidden;
-    overflow: hidden;
-    white-space: nowrap;
-    border: none;
-    outline: none;
-    background: none;
-    resize: none;
   }
 }
 
