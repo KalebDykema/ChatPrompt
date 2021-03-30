@@ -13,3 +13,9 @@
   word-wrap: break-word;
   border-bottom: 1px dashed $main-color-dark;
 }
+
+.typing{
+  @extend .message;
+  color: $dark-color;
+  border: none;
+}
