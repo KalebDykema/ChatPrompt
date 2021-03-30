@@ -3,9 +3,11 @@
 
 // Chat History
 #chat-history{
+  position: relative;
   overflow: hidden;
   overflow-y: scroll;
   height: 75vh;
+  width: 100%;
   margin-top: 2rem;
   padding: 0.5rem;
   border: 2px solid $main-color;

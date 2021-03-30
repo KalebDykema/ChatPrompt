@@ -8,7 +8,6 @@ app.use('/js', express.static(__dirname + '/dist/js'));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/dist/index.html')
-
 })
 
 io.on('connection', (socket) => {

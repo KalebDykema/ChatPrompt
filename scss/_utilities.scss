@@ -1,11 +1,15 @@
 // Container Class
 .container{
   overflow: hidden;
+  position: relative;
   width: $website-width;
   margin: 1rem auto;
 }
 
 // Message
 .message{
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  word-wrap: break-word;
+  border-bottom: 1px dashed $main-color-dark;
 }
