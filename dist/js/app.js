@@ -1,6 +1,6 @@
 let socket = io()
 
-let name = 'NA'
+let name = 'N/A'
 
 let nameForm = document.getElementById('enter-name')
 let nameInput = document.getElementById('input-name')
@@ -9,26 +9,28 @@ let messageForm = document.getElementById('send-message')
 let messageInput = document.getElementById('input-message')
 
 document.onkeydown = function(e){
-  if(e.key == 'Enter' && nameInput.value){
+  if(e.key == 'Enter' && nameInput.value.trim() != ''){
     e.preventDefault()
-    name = nameInput.value
+    name = nameInput.value.trim()
     nameInput.value = ''
 
     nameForm.style.display = 'none'
     messages.style.display = 'block'
     messageForm.style.display = 'flex'
-  } else if(e.key == 'Enter' && messageInput.value){
+  } else if(e.key == 'Enter' && messageInput.value.trim() != ''){
     e.preventDefault()
-    socket.emit('chat message', name, messageInput.value,)
+    socket.emit('chat message', name, messageInput.value.trim())
     messageInput.value = '';
-  } else if(messageInput.value) socket.emit('typing')
+  }
+  
+  if(messageInput.value) socket.emit('typing')
 }
 
 socket.on('chat message', function(name, msg) {
   if(messages.lastChild.classList == 'typing'){
     messages.lastChild.remove()
   }
-  let item = document.createElement('p')
+  let item = document.createElement('pre')
   item.classList = "message"
   item.textContent = '> ' + name + ': ' + msg
   messages.appendChild(item)
