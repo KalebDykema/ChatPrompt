@@ -5,13 +5,15 @@
 #chat-history{
   overflow: hidden;
   overflow-y: scroll;
-  height: 80vh;
+  height: 75vh;
+  margin-top: 2rem;
+  padding: 0.5rem;
+  border: 2px solid $main-color;
 }
 
 // Send Message
 #send-message{
-  position: fixed;
-  bottom: 1rem;
+  margin: 0.5rem 0;
   width: $website-width;
   display: flex;
   align-items: baseline;

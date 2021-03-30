@@ -1,10 +1,13 @@
-const app = require('express')()
+var express = require('express')
+var app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
+app.use('/css', express.static(__dirname + '/dist/css'));
+
 app.get('/', (req, res) => {
-  // res.send('<h1>Helo world</h1>')
   res.sendFile(__dirname + '/dist/index.html')
+
 })
 
 io.on('connection', (socket) => {
