@@ -1,5 +1,4 @@
 /* Command Ideas
-  /help - shows all commands on client
   /changename - change name
   /uicolor - change uicolor on client
   /color - change color of your messages on server
@@ -7,26 +6,16 @@
 */
 const cmdFunctions = require('./commandfunctions.js')
 
-// Local Commands
-const localCmds = {
-  'clear': (ui) => {
-    console.log('clear')
-    while (ui.messages.firstChild) {
-      ui.messages.removeChild(ui.messages.firstChild);
-    }
-  }
-}
-
 function runCommand(cmd){
   // Splits the command up into the first word and then after the first space
   cmd = cmd.substring(cmd.indexOf('/')+1).toLowerCase()
-  let isCommand;
+  let isCommand
   const initCmd = cmd.split(' ')[0]
   const secondCmd = cmd.substring(cmd.indexOf(' ')+1)
 
   Object.keys(cmds).forEach(key => {
     if(initCmd == key){
-      isCommand = true;
+      isCommand = true
     }
   })
 
@@ -43,4 +32,4 @@ const cmds = {
   'unfliptable': () => '┬─┬ ノ( ゜-゜ノ)'
 }
 
-module.exports.runCommand = runCommand;
+module.exports.runCommand = runCommand
