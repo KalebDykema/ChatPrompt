@@ -26,6 +26,10 @@ document.onkeydown = function(e){
   if(messageInput.value) socket.emit('typing')
 }
 
+document.onkeyup = function(){
+  if(messageInput.value) socket.emit('typing')
+}
+
 socket.on('chat message', function(name, msg) {
   if(messages.lastChild.classList == 'typing'){
     messages.lastChild.remove()
@@ -44,5 +48,7 @@ socket.on('typing', function() {
     item.textContent = 'someone is typing'
     messages.appendChild(item)
     messages.scrollTo(0, messages.scrollHeight)
+  } else if(messageInput.value == ''){
+    messages.lastChild.remove()
   }
 })
