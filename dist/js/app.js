@@ -31,7 +31,7 @@ document.onkeydown = function(e){
   }
 
   // Looks to see if the user is typing and emits that to the server
-  if(nameForm.style.display == 'none' && messageInput.value != ''){ 
+  if(nameForm.style.display == 'none'){ 
     socket.emit('typing', name, messageInput.value)
   }
 }
@@ -39,7 +39,7 @@ document.onkeydown = function(e){
 // Key Up Listener
 document.onkeyup = function(){
   // Looks to see if the user is typing and emits that to the server
-  if(nameForm.style.display == 'none' && messageInput.value != ''){ 
+  if(nameForm.style.display == 'none'){ 
     socket.emit('typing', name, messageInput.value)
   }
 }
@@ -75,6 +75,7 @@ socket.on('typing', function(name, msg) {
     messages.scrollTo(0, messages.scrollHeight)
     // If the user's message field is now empty, removes their typing message form the DOM 
   } else if(messages.querySelector(`.typing.${name}`) && msg == '') {
+    console.log(messages.querySelector(`.typing.${name}`), msg)
     messages.querySelector(`.typing.${name}`).remove()
   }
 })
