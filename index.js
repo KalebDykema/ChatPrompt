@@ -16,8 +16,14 @@ app.get('/', (req, res) => {
 // Listen for different sockets after the user connects
 io.on('connection', (socket) => {
   console.log('a user connected')
+
   socket.on('disconnect', () => {
-    console.log('user disconnected')
+    console.log('a user disconnected')
+    io.emit('user disconnected', socket.user)
+  })
+  socket.on('new user', (name) => {
+    socket.user = name
+    io.emit('new user', name)
   })
   socket.on('chat message', (name, msg) => {
     io.emit('chat message', name, msg)

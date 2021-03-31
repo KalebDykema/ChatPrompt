@@ -11,6 +11,31 @@ let messages = document.getElementById('chat-history')
 let messageForm = document.getElementById('send-message')
 let messageInput = document.getElementById('input-message')
 
+// General Functions
+// If there's any typing messages from other users, push them under the new user message
+function appendTypingMessages(){
+  if(messages.querySelectorAll('.typing')){
+    messages.querySelectorAll('.typing').forEach((typingMsg) => {
+      messages.appendChild(typingMsg)
+    })
+  }
+}
+// Adds new message to chat log
+function addNewMessage(element, classes, text){
+  let item = document.createElement(element)
+  item.classList = classes
+  item.textContent = text
+  messages.appendChild(item)
+  appendTypingMessages()
+  messages.scrollTo(0, messages.scrollHeight)
+}
+// Looks to see if the user is typing and emits that to the server
+function emitTypingIfUserIsTyping(){
+  if(nameForm.style.display == 'none'){ 
+    socket.emit('typing', name, messageInput.value)
+  }
+}
+
 // Key Down Listener
 document.onkeydown = function(e){
   // Looks if Enter is clicked and then saves a chosen name to a local variable
@@ -18,6 +43,7 @@ document.onkeydown = function(e){
     e.preventDefault()
     name = nameInput.value.trim()
     nameInput.value = ''
+    socket.emit('new user', name)
 
     // Gets rid of the name form and displays the messages and message form
     nameForm.style.display = 'none'
@@ -30,19 +56,26 @@ document.onkeydown = function(e){
     messageInput.value = '';
   }
 
-  // Looks to see if the user is typing and emits that to the server
-  if(nameForm.style.display == 'none'){ 
-    socket.emit('typing', name, messageInput.value)
-  }
+  emitTypingIfUserIsTyping()
 }
 
 // Key Up Listener
 document.onkeyup = function(){
-  // Looks to see if the user is typing and emits that to the server
-  if(nameForm.style.display == 'none'){ 
-    socket.emit('typing', name, messageInput.value)
-  }
+  emitTypingIfUserIsTyping()
 }
+
+// On New User Socket Received
+socket.on('new user', function(name) {
+  addNewMessage('p', 'new-user', name + ' has joined')
+})
+
+// On User Disconnected Socket Received
+socket.on('user disconnected', function(user){
+  if(messages.querySelector(`.typing.${user}`)) {
+    messages.querySelector(`.typing.${user}`).remove()
+  }
+  addNewMessage('p', 'user-disconnected', user + ' has disconnected')
+})
 
 // On Chat Message Socket Received
 socket.on('chat message', function(name, msg) {
@@ -51,31 +84,16 @@ socket.on('chat message', function(name, msg) {
     messages.querySelector(`.${name}`).remove()
   }
   // Create the message element and display it to the dom
-  let item = document.createElement('pre')
-  item.classList = "message"
-  item.textContent = '> ' + name + ': ' + msg
-  messages.appendChild(item)
-  // If there's any typing messages from other users, push them under the new message
-  if(messages.querySelectorAll('.typing')){
-    messages.querySelectorAll('.typing').forEach((typingMsg) => {
-      messages.appendChild(typingMsg)
-    })
-  }
-  messages.scrollTo(0, messages.scrollHeight)
+  addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
 })
 
 // On Typing Socket Received
 socket.on('typing', function(name, msg) {
   // If the user doesn't already have a typing message, creates one and displays it in the DOM
   if(!messages.querySelector(`.typing.${name}`) && msg != ''){
-    let item = document.createElement('p')
-    item.classList = `typing ${name}`
-    item.textContent = `${name} is typing`
-    messages.appendChild(item)
-    messages.scrollTo(0, messages.scrollHeight)
+    addNewMessage('p', `typing ${name}`, `${name} is typing`)
     // If the user's message field is now empty, removes their typing message form the DOM 
   } else if(messages.querySelector(`.typing.${name}`) && msg == '') {
-    console.log(messages.querySelector(`.typing.${name}`), msg)
     messages.querySelector(`.typing.${name}`).remove()
   }
 })

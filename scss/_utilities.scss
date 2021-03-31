@@ -8,19 +8,25 @@
 
 // Message
 .message{
-  margin: 0.5rem;
-  padding: 0.5rem;
-  border-bottom: 1px dashed $main-color-dark;
-
-  white-space: pre-wrap;       
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word;
+  @include message-template;
 }
 
+// Typing
 .typing{
-  @extend .message;
+  @include message-template;
   color: $dark-color;
   border: none;
+}
+
+// New User
+.new-user{
+  @include message-template;
+  color: $white;
+  // border-color: $white;
+}
+
+// User Disconnected
+.user-disconnected{
+  @include message-template;
+  color: $main-color;
 }
