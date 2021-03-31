@@ -8,10 +8,15 @@
 
 // Message
 .message{
-  margin: 0.5rem 0;
-  padding: 0.5rem 0;
-  word-wrap: break-word;
+  margin: 0.5rem;
+  padding: 0.5rem;
   border-bottom: 1px dashed $main-color-dark;
+
+  white-space: pre-wrap;       
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
 
 .typing{
