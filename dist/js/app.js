@@ -22,17 +22,21 @@ document.onkeydown = function(e){
     socket.emit('chat message', name, messageInput.value.trim())
     messageInput.value = '';
   }
-  
-  if(messageInput.value) socket.emit('typing')
+
+  if(nameForm.style.display == 'none' && messageInput.value != ''){ 
+    socket.emit('typing', name, messageInput.value)
+  }
 }
 
 document.onkeyup = function(){
-  if(messageInput.value) socket.emit('typing')
+  if(nameForm.style.display == 'none' && messageInput.value != ''){ 
+    socket.emit('typing', name, messageInput.value)
+  }
 }
 
 socket.on('chat message', function(name, msg) {
-  if(messages.lastChild.classList == 'typing'){
-    messages.lastChild.remove()
+  if(messages.querySelectorAll('.typing')){
+    messages.querySelector(`.${name}`).remove()
   }
   let item = document.createElement('pre')
   item.classList = "message"
@@ -41,14 +45,14 @@ socket.on('chat message', function(name, msg) {
   messages.scrollTo(0, messages.scrollHeight)
 })
 
-socket.on('typing', function() {
-  if(messages.lastChild.classList != 'typing'){
+socket.on('typing', function(name, msg) {
+  if(!messages.querySelector(`.typing.${name}`) && msg != ''){
     let item = document.createElement('p')
-    item.classList = "typing"
-    item.textContent = 'someone is typing'
+    item.classList = `typing ${name}`
+    item.textContent = `${name} is typing`
     messages.appendChild(item)
     messages.scrollTo(0, messages.scrollHeight)
-  } else if(messageInput.value == ''){
-    messages.lastChild.remove()
+  } else if(messages.querySelector(`.typing.${name}`) && msg == '') {
+    messages.querySelector(`.typing.${name}`).remove()
   }
 })
