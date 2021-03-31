@@ -1,4 +1,5 @@
 import * as ui from './uictrl.js'
+import * as localCmds from './localcommands.js'
 
 // Socket Object
 const socket = io()
@@ -27,7 +28,10 @@ document.onkeydown = function(e){
     // Looks if Enter is clicked and then emits a message to the server
   } else if(e.key == 'Enter' && ui.messageInput.value.trim() != ''){
     e.preventDefault()
-    socket.emit('chat message', name, ui.messageInput.value.trim())
+    // Makes sure the input is not a command for the local client
+    if(ui.messageInput.value.trim().charAt(0) != '/' || !localCmds.checkForAndRunLocalCommand(ui.messageInput.value.trim(), ui)){
+      socket.emit('chat message', name, ui.messageInput.value.trim())
+    }
     ui.messageInput.value = '';
   }
 
