@@ -54,13 +54,15 @@ socket.on('user disconnected', function(user){
 
 // On Chat Message Socket Received
 socket.on('chat message', function(name, msg) {
-  console.log('new message')
   // If there's a typing message for the user, removes it
   if(ui.messages.querySelectorAll('.typing')){
     ui.messages.querySelector(`.${name}`).remove()
   }
-  // Create the message element and display it to the dom
-  ui.addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
+  // If if it's command meant for the client, give it a different styling 
+  if(msg.split(' ')[0] == 'client-cmd'){
+    ui.addNewMessage('p', 'cmd', msg.substring(msg.indexOf(' ')+1))
+    // Create the message element and display it to the dom
+  } else ui.addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
 })
 
 // On Typing Socket Received

@@ -30,3 +30,9 @@
   @include message-template;
   color: $main-color;
 }
+
+// Command Results
+.cmd{
+  @include message-template;
+  color: $complement-color-light;
+}

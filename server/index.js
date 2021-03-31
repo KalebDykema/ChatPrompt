@@ -33,14 +33,14 @@ io.on('connection', (socket) => {
       let results = cmd.runCommand(msg)
       // If the command is only a client side one, only returns to the appropriate user
       if(results.split(' ')[0] == 'client'){
-        io.to(socket.user).emit('chat message', name, results.substring(results.indexOf(' ')+1))
+        io.to(socket.user).emit('chat message', name, 'client-cmd ' + results.substring(results.indexOf(' ')+1))
       } else {
         io.emit('chat message', name, results)
       }
       // Message
     } else io.emit('chat message', name, msg)
   })
-  
+
   // Is Typing
   socket.on('typing', (name, msg) => {
     io.emit('typing', name, msg)
