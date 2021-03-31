@@ -14,18 +14,18 @@ app.get('/', (req, res) => {
 
 // Listen for different sockets after the user connects
 io.on('connection', (socket) => {
-  console.log('a user connected')
-
   // Disconnect
   socket.on('disconnect', () => {
-    console.log('a user disconnected')
     io.emit('user disconnected', socket.user)
   })
+
   // New User
   socket.on('new user', (name) => {
     socket.user = name
+    socket.join(socket.user);
     io.emit('new user', name)
   })
+
   // Chat Message
   socket.on('chat message', (name, msg) => {
     // Commands
@@ -33,15 +33,14 @@ io.on('connection', (socket) => {
       let results = cmd.runCommand(msg)
       // If the command is only a client side one, only returns to the appropriate user
       if(results.split(' ')[0] == 'client'){
-        console.log('client command to ' + socket.user)
         io.to(socket.user).emit('chat message', name, results.substring(results.indexOf(' ')+1))
       } else {
-        console.log('global command')
         io.emit('chat message', name, results)
       }
       // Message
     } else io.emit('chat message', name, msg)
   })
+  
   // Is Typing
   socket.on('typing', (name, msg) => {
     io.emit('typing', name, msg)
