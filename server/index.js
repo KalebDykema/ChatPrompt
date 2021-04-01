@@ -35,7 +35,9 @@ io.on('connection', (socket) => {
       // If the command is only a client side one, only returns to the appropriate user
       if(results.split(' ')[0] == 'client'){
         io.to(socket.user).emit('chat message', name, 'client-cmd ' + results.substring(results.indexOf(' ')+1))
-      } else {
+      } // else if(results.split(' ')[0] == 'whisper') {
+      //   io.to(results.split(' ')[1]).emit('chat message', name, 'whisper ' +results)
+      }else {
         io.emit('chat message', name, results)
       }
       // Message

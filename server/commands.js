@@ -3,8 +3,11 @@
   /uicolor - change uicolor on client
   /color - change color of your messages on server
   /type - where all message strings will be displayed sequentially, think an iterating for loop that prints the next character and then waits for 100 ms or something; each character prints one at a time
+  Lennyface pops up when a 1 is rolled on the roller
+  /whisper or /w - private message someone
 */
-const diceRoller = require('./diceRoller.js')
+const diceRoller = require('./diceroller.js')
+const messager = require('./messager.js')
 
 function runCommand(cmd){
   // Splits the command up into the first word and then after the first space
@@ -13,6 +16,7 @@ function runCommand(cmd){
   const initCmd = cmd.split(' ')[0]
   const secondCmd = cmd.substring(cmd.indexOf(' ')+1)
 
+  // Loop through the commands and make sure it's a valid command
   Object.keys(cmds).forEach(key => {
     if(initCmd == key){
       isCommand = true
@@ -25,6 +29,7 @@ function runCommand(cmd){
 
 // Commands
 const cmds = {
+  // 'whisper': (recipientAndMessage) => messager.whisper(recipientAndMessage),
   'roll': (rollCmd) => diceRoller.rollDice(rollCmd),
   'r': (rollCmd) => diceRoller.rollDice(rollCmd),
   'lennyface': () => '( ͡° ͜ʖ ͡°)',
