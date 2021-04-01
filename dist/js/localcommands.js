@@ -27,7 +27,6 @@ export function checkForAndRunLocalCommand(cmd, ui){
 const localCmds = {
   'help': (ui) => showCommands(ui),
   'clear': (ui) => {
-    console.log('clear')
     while (ui.messages.firstChild) {
       ui.messages.removeChild(ui.messages.firstChild);
     }

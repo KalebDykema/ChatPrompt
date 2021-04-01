@@ -59,7 +59,7 @@ socket.on('user disconnected', function(user){
 // On Chat Message Socket Received
 socket.on('chat message', function(name, msg) {
   // If there's a typing message for the user, removes it
-  if(ui.messages.querySelectorAll('.typing')){
+  if(ui.messages.querySelectorAll('.typing') == true){
     ui.messages.querySelector(`.${name}`).remove()
   }
   // If if it's command meant for the client, give it a different styling 

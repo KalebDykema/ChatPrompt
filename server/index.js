@@ -24,6 +24,7 @@ io.on('connection', (socket) => {
     socket.user = name
     socket.join(socket.user);
     io.emit('new user', name)
+    io.to(socket.user).emit('chat message', name, 'client-cmd ' + 'Type /help or / for commands.')
   })
 
   // Chat Message

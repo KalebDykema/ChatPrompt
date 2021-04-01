@@ -4,7 +4,7 @@
   /color - change color of your messages on server
   /type - where all message strings will be displayed sequentially, think an iterating for loop that prints the next character and then waits for 100 ms or something; each character prints one at a time
 */
-const cmdFunctions = require('./commandfunctions.js')
+const diceRoller = require('./diceRoller.js')
 
 function runCommand(cmd){
   // Splits the command up into the first word and then after the first space
@@ -25,8 +25,8 @@ function runCommand(cmd){
 
 // Commands
 const cmds = {
-  'roll': (rollCmd) => cmdFunctions.rollDice(rollCmd),
-  'r': (rollCmd) => cmdFunctions.rollDice(rollCmd),
+  'roll': (rollCmd) => diceRoller.rollDice(rollCmd),
+  'r': (rollCmd) => diceRoller.rollDice(rollCmd),
   'lennyface': () => '( ͡° ͜ʖ ͡°)',
   'tableflip': () => '(╯°□°）╯︵ ┻━┻',
   'unfliptable': () => '┬─┬ ノ( ゜-゜ノ)'
