@@ -2,7 +2,7 @@
 
 A Node Express chat app that requires no login, only a name. Has multiple commands that can be accessed via the /help or / command.
 
-![chatprompt_screenshot](https://github.com/KalebDykema/WebCalc/blob/master/ChatPrompt.png)
+![chatprompt_screenshot](https://github.com/KalebDykema/ChatPrompt/blob/main/ChatPrompt.png)
 
 # Technologies
 
