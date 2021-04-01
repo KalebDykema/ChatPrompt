@@ -48,5 +48,5 @@ function showCommands(ui){
   for (const cmd in cmdDescs) {
     results = results.concat(`${cmd}: ${cmdDescs[cmd]}\n\n`)
   }
-  ui.addNewMessage('p', 'cmd', results)
+  ui.addNewMessage('p', 'client-cmd', results)
 }

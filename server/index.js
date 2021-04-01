@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
     socket.user = name
     socket.join(socket.user);
     io.emit('new user', name)
-    io.to(socket.user).emit('chat message', name, 'client-cmd ' + 'Type /help or / for commands.')
+    io.to(socket.user).emit('command', name, 'client-cmd ' + 'Type /help or / for commands.')
   })
 
   // Chat Message
@@ -34,11 +34,12 @@ io.on('connection', (socket) => {
       let results = cmd.runCommand(msg)
       // If the command is only a client side one, only returns to the appropriate user
       if(results.split(' ')[0] == 'client'){
-        io.to(socket.user).emit('chat message', name, 'client-cmd ' + results.substring(results.indexOf(' ')+1))
+        io.to(socket.user).emit('command', name, 'client-cmd ' + results.substring(results.indexOf(' ')+1))
       } // else if(results.split(' ')[0] == 'whisper') {
       //   io.to(results.split(' ')[1]).emit('chat message', name, 'whisper ' +results)
-      }else {
-        io.emit('chat message', name, results)
+      // } 
+      else {
+        io.emit('command', name, results)
       }
       // Message
     } else io.emit('chat message', name, msg)

@@ -14,7 +14,7 @@ If you would like to run the server on your local network, you simply need to ha
 
 ```
 npm install
-node server/index.js
+npm start
 ```
 
 You can then access the app via a web browser at http://localhost:3000/ or your IP address on your home network.

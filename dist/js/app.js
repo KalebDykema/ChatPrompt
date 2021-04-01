@@ -5,10 +5,18 @@ import * as localCmds from './localcommands.js'
 const socket = io()
 // Local Name Variable
 let name = 'N/A'
+
 // Looks to see if the user is typing and emits that to the server
 function emitTypingIfUserIsTyping(){
   if(ui.nameForm.style.display == 'none'){ 
     socket.emit('typing', name, ui.messageInput.value)
+  }
+}
+
+// Checks if there's a typing message and remove it
+function checkForAndRemoveTypingMessage(){
+  if(ui.messages.querySelectorAll('.typing') == true){
+    ui.messages.querySelector(`.${name}`).remove()
   }
 }
 
@@ -58,15 +66,17 @@ socket.on('user disconnected', function(user){
 
 // On Chat Message Socket Received
 socket.on('chat message', function(name, msg) {
-  // If there's a typing message for the user, removes it
-  if(ui.messages.querySelectorAll('.typing') == true){
-    ui.messages.querySelector(`.${name}`).remove()
-  }
-  // If if it's command meant for the client, give it a different styling 
-  if(msg.split(' ')[0] == 'client-cmd'){
-    ui.addNewMessage('p', 'cmd', msg.substring(msg.indexOf(' ')+1))
+  checkForAndRemoveTypingMessage()
+  ui.addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
+})
+
+// On Command Socket Received
+socket.on('command', function(name, results) {
+  checkForAndRemoveTypingMessage()
+  if(results.split(' ')[0] == 'client-cmd'){
+    ui.addNewMessage('p', 'client-cmd', results.substring(results.indexOf(' ')+1))
     // Create the message element and display it to the dom
-  } else ui.addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
+  } else ui.addNewMessage('pre', 'cmd', '> ' + name + ': ' + results)
 })
 
 // On Typing Socket Received

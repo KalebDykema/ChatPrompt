@@ -5,6 +5,7 @@
   /type - where all message strings will be displayed sequentially, think an iterating for loop that prints the next character and then waits for 100 ms or something; each character prints one at a time
   Lennyface pops up when a 1 is rolled on the roller
   /whisper or /w - private message someone
+  /whosonline - shows everyone online
 */
 const diceRoller = require('./diceroller.js')
 const messager = require('./messager.js')
