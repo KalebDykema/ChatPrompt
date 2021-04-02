@@ -1,10 +1,10 @@
 /* Command Ideas
+  /r - reply to whoever whispered to you last
   /changename - change name
   /uicolor - change uicolor on client
   /color - change color of your messages on server
   /type - where all message strings will be displayed sequentially, think an iterating for loop that prints the next character and then waits for 100 ms or something; each character prints one at a time
   Lennyface pops up when a 1 is rolled on the roller
-  /whisper or /w - private message someone
   /whosonline - shows everyone online
 */
 const diceRoller = require('./diceroller.js')
@@ -25,18 +25,18 @@ function runCommand(cmd){
   })
 
   if(isCommand) return cmds[initCmd](secondCmd)
-  else return ['client ', 'command does not exist']
+  else return ['client', 'command does not exist']
 }
 
 // Commands
 const cmds = {
-  'whisper': (recipientAndMessage) => messager.whisper(recipientAndMessage),
-  'w': (recipientAndMessage) => messager.whisper(recipientAndMessage),
-  'roll': (rollCmd) => diceRoller.rollDice(rollCmd.toLowerCase()),
-  'r': (rollCmd) => diceRoller.rollDice(rollCmd.toLowerCase()),
   'lennyface': () => '( ͡° ͜ʖ ͡°)',
+  'r': (rollCmd) => diceRoller.rollDice(rollCmd.toLowerCase()),
+  'roll': (rollCmd) => diceRoller.rollDice(rollCmd.toLowerCase()),
   'tableflip': () => '(╯°□°）╯︵ ┻━┻',
-  'unfliptable': () => '┬─┬ ノ( ゜-゜ノ)'
+  'unfliptable': () => '┬─┬ ノ( ゜-゜ノ)',
+  'w': (recipientAndMessage) => messager.whisper(recipientAndMessage),
+  'whisper': (recipientAndMessage) => messager.whisper(recipientAndMessage),
 }
 
 module.exports.runCommand = runCommand

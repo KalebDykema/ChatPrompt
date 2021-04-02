@@ -24,7 +24,7 @@ function rollDice(rollCmd){
     }
     return `rolling ${numberOfDice}d${die} (${result} = ${rollsString})`
     // If there's no roll command
-  } else return 'client ' + 'must include number of dice and/or type of dice, such as 2d6 or d20'
+  } else return ['client ', 'must include number of dice and/or type of dice, such as 2d6 or d20']
 }
 
 module.exports.rollDice = rollDice;
