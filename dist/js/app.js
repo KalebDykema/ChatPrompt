@@ -1,5 +1,5 @@
 import * as ui from './uictrl.js'
-import * as localCmds from './localcommands.js'
+import * as localCmds from './localcommands/localcommands.js'
 
 // Socket Object
 const socket = io()
@@ -27,6 +27,7 @@ document.onkeydown = function(e){
     e.preventDefault()
     name = ui.nameInput.value.trim()
     ui.nameInput.value = ''
+    localCmds.checkForAndRunLocalCommand('/clear', ui)
     socket.emit('new user', name)
 
     // Gets rid of the name form and displays the messages and message form
@@ -73,10 +74,16 @@ socket.on('chat message', function(name, msg) {
 // On Command Socket Received
 socket.on('command', function(name, results) {
   checkForAndRemoveTypingMessage()
-  if(results.split(' ')[0] == 'client-cmd'){
-    ui.addNewMessage('p', 'client-cmd', results.substring(results.indexOf(' ')+1))
+  if(results[0] == 'client'){
+    ui.addNewMessage('p', 'client', results[1])
     // Create the message element and display it to the dom
   } else ui.addNewMessage('pre', 'cmd', '> ' + name + ': ' + results)
+})
+
+// On Whisper Socket Received
+socket.on('whisper', function(otherPersonName, msg){
+  checkForAndRemoveTypingMessage()
+  ui.addNewMessage('pre', 'whisper', '> ' + otherPersonName + ': ' + msg)
 })
 
 // On Typing Socket Received

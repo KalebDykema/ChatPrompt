@@ -11,6 +11,12 @@
   @include message-template;
 }
 
+// Whisper
+.whisper{
+  @include message-template;
+  color: $complement-color;
+}
+
 // Typing
 .typing{
   @include message-template;
@@ -37,8 +43,8 @@
   color: $yellow-color;
 }
 
-// Command Results
-.client-cmd{
+// Client Only Command Results
+.client{
   @include message-template;
   color: $complement-color-light;
 }

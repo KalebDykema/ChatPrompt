@@ -3,7 +3,7 @@ let express = require('express')
 let app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-const cmd = require('./commands.js')
+const cmd = require('./commands/commands.js')
 
 // Sends the HTML, CSS, and JS files to the client
 app.use('/css', express.static(process.cwd() + '/dist/css'));
@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
     socket.user = name
     socket.join(socket.user);
     io.emit('new user', name)
-    io.to(socket.user).emit('command', name, 'client-cmd ' + 'Type /help or / for commands.')
+    io.to(socket.user).emit('command', name, ['client', 'Type /help or / for commands.'])
   })
 
   // Chat Message
@@ -32,12 +32,17 @@ io.on('connection', (socket) => {
     // Commands
     if(msg.charAt(0) == '/'){
       let results = cmd.runCommand(msg)
-      // If the command is only a client side one, only returns to the appropriate user
-      if(results.split(' ')[0] == 'client'){
-        io.to(socket.user).emit('command', name, 'client-cmd ' + results.substring(results.indexOf(' ')+1))
-      } // else if(results.split(' ')[0] == 'whisper') {
-      //   io.to(results.split(' ')[1]).emit('chat message', name, 'whisper ' +results)
-      // } 
+      // Checks if the results are an array, meaning it has multiple paramaters to sort through
+      if(typeof(results) == 'object'){
+        // Client Only
+        if(results[0] == 'client'){
+          io.to(socket.user).emit('command', name, results)
+        // Whisper
+        } else if(results[0] == 'whisper'){
+          io.to(results[1]).emit('whisper', name, results[2])
+          io.to(socket.user).emit('whisper', results[1], results[2])
+        }
+      }
       else {
         io.emit('command', name, results)
       }
