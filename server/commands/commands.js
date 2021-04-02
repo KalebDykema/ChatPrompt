@@ -1,5 +1,5 @@
 /* Command Ideas
-  /r - reply to whoever whispered to you last
+  /w noname - reply to whoever whispered to you last
   /changename - change name
   /uicolor - change uicolor on client
   /color - change color of your messages on server

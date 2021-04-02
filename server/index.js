@@ -14,6 +14,8 @@ app.get('/', (req, res) => {
 
 // Listen for different sockets after the user connects
 io.on('connection', (socket) => {
+  let lastMessaged;
+
   // Disconnect
   socket.on('disconnect', () => {
     io.emit('user disconnected', socket.user)
@@ -39,8 +41,16 @@ io.on('connection', (socket) => {
           io.to(socket.user).emit('command', name, results)
         // Whisper
         } else if(results[0] == 'whisper'){
-          io.to(results[1]).emit('whisper', name, results[2])
+          lastMessaged = results[1]
+          io.to(lastMessaged).emit('whisper', name, results[2])
           io.to(socket.user).emit('whisper', name, results[2])
+          // LEFT OFF HERE
+        } else if(results[0] == 'reply'){
+          if(!lastMessaged) io.to(socket.user).emit('command', name, `Must type out full whisper command unless you're replying to someone.`)
+          else {
+            io.to(lastMessaged).emit('whisper', name, results[1])
+            io.to(socket.user).emit('whisper', name, results[1])
+          }
         }
       }
       else {
