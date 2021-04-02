@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
         // Whisper
         } else if(results[0] == 'whisper'){
           io.to(results[1]).emit('whisper', name, results[2])
-          io.to(socket.user).emit('whisper', results[1], results[2])
+          io.to(socket.user).emit('whisper', name, results[2])
         }
       }
       else {
