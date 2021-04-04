@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
           io.to(socket.user).emit('whisper', name, results[2])
           // LEFT OFF HERE
         } else if(results[0] == 'reply'){
+          console.log('test')
           if(!lastMessaged) io.to(socket.user).emit('command', name, `Must type out full whisper command unless you're replying to someone.`)
           else {
             io.to(lastMessaged).emit('whisper', name, results[1])

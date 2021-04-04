@@ -10,6 +10,4 @@ function whisper(recipientAndMessage) {
   } else return ['whisper', recipient, message]
 }
 
-whisper('test hello sir')
-
 module.exports.whisper = whisper
