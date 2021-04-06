@@ -41,12 +41,13 @@ io.on('connection', (socket) => {
           io.to(socket.user).emit('command', name, results)
         // Whisper
         } else if(results[0] == 'whisper'){
+          console.log(lastMessaged)
           lastMessaged = results[1]
           io.to(lastMessaged).emit('whisper', name, results[2])
           io.to(socket.user).emit('whisper', name, results[2])
           // LEFT OFF HERE
         } else if(results[0] == 'reply'){
-          console.log('test')
+          console.log(lastMessaged)
           if(!lastMessaged) io.to(socket.user).emit('command', name, `Must type out full whisper command unless you're replying to someone.`)
           else {
             io.to(lastMessaged).emit('whisper', name, results[1])
