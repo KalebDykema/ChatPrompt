@@ -5,6 +5,8 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const cmd = require('./commands/commands.js')
 
+let users = []
+
 // Sends the HTML, CSS, and JS files to the client
 app.use('/css', express.static(process.cwd() + '/dist/css'));
 app.use('/js', express.static(process.cwd() + '/dist/js'));
@@ -23,17 +25,19 @@ io.on('connection', (socket) => {
 
   // New User
   socket.on('new user', (name) => {
-    socket.user = name
+    socket.user = name.replace(/ /g, '-')
     socket.join(socket.user);
-    io.emit('new user', name)
-    io.to(socket.user).emit('command', name, ['client', 'Type /help or / for commands.'])
+    users.push(socket.user)
+    console.log(users)
+    io.emit('new user', socket.user)
+    io.to(socket.user).emit('command', socket.user, ['client', 'Type /help or / for commands.'])
   })
 
   // Chat Message
   socket.on('chat message', (name, msg) => {
     // Commands
     if(msg.charAt(0) == '/'){
-      let results = cmd.runCommand(msg)
+      let results = cmd.runCommand(msg, users)
       // Checks if the results are an array, meaning it has multiple paramaters to sort through
       if(typeof(results) == 'object'){
         // Client Only
@@ -41,17 +45,15 @@ io.on('connection', (socket) => {
           io.to(socket.user).emit('command', name, results)
         // Whisper
         } else if(results[0] == 'whisper'){
-          console.log(lastMessaged)
           lastMessaged = results[1]
           io.to(lastMessaged).emit('whisper', name, results[2])
-          io.to(socket.user).emit('whisper', name, results[2])
+          io.to(socket.user).emit('whisper', `To ${lastMessaged}`, results[2])
           // LEFT OFF HERE
         } else if(results[0] == 'reply'){
-          console.log(lastMessaged)
           if(!lastMessaged) io.to(socket.user).emit('command', name, `Must type out full whisper command unless you're replying to someone.`)
           else {
             io.to(lastMessaged).emit('whisper', name, results[1])
-            io.to(socket.user).emit('whisper', name, results[1])
+            io.to(socket.user).emit('whisper', `To ${lastMessaged}`, results[1])
           }
         }
       }

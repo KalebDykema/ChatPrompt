@@ -10,7 +10,7 @@
 const diceRoller = require('./diceroller.js')
 const messager = require('./messager.js')
 
-function runCommand(cmd){
+function runCommand(cmd, users){
   // Splits the command up into the first word and then after the first space
   cmd = cmd.substring(cmd.indexOf('/')+1)
   let isCommand
@@ -24,7 +24,7 @@ function runCommand(cmd){
     }
   })
 
-  if(isCommand) return cmds[initCmd](secondCmd)
+  if(isCommand) return cmds[initCmd](secondCmd, users)
   else return ['client', 'command does not exist']
 }
 
@@ -35,8 +35,8 @@ const cmds = {
   'roll': (rollCmd) => diceRoller.rollDice(rollCmd.toLowerCase()),
   'tableflip': () => '(╯°□°）╯︵ ┻━┻',
   'unfliptable': () => '┬─┬ ノ( ゜-゜ノ)',
-  'w': (recipientAndMessage) => messager.whisper(recipientAndMessage),
-  'whisper': (recipientAndMessage) => messager.whisper(recipientAndMessage),
+  'w': (recipientAndMessage, users) => messager.whisper(recipientAndMessage, users),
+  'whisper': (recipientAndMessage, users) => messager.whisper(recipientAndMessage, users),
 }
 
 module.exports.runCommand = runCommand
