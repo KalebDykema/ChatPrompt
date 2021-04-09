@@ -84,6 +84,7 @@ socket.on('command', function(name, results) {
 socket.on('whisper', function(otherPersonName, msg){
   checkForAndRemoveTypingMessage()
   ui.addNewMessage('pre', 'whisper', '> ' + otherPersonName + ': ' + msg)
+  socket.emit('last-messaged', otherPersonName)
 })
 
 // On Typing Socket Received

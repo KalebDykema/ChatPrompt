@@ -5,6 +5,7 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const cmd = require('./commands/commands.js')
 
+// Server Variables
 let users = []
 
 // Sends the HTML, CSS, and JS files to the client
@@ -16,18 +17,23 @@ app.get('/', (req, res) => {
 
 // Listen for different sockets after the user connects
 io.on('connection', (socket) => {
-  let lastMessaged;
-
   // Disconnect
   socket.on('disconnect', () => {
+    // Emit a disconnect message and remove them from the user array
     io.emit('user disconnected', socket.user)
+    users = users.filter(e => e !== socket.user)
   })
 
   // New User
   socket.on('new user', (name) => {
+    // Gets rid of spaces in the name and replaces them with a dash, adds the users to the user array
     socket.user = name.replace(/ /g, '-')
     socket.join(socket.user);
     users.push(socket.user)
+
+    socket.lastMessaged = ''
+    socket.join(socket.lastMessaged)
+    
     io.emit('new user', socket.user)
     io.to(socket.user).emit('command', socket.user, ['client', 'Type /help or / for commands.'])
   })
@@ -36,7 +42,7 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     // Commands
     if(msg.charAt(0) == '/'){
-      let results = cmd.runCommand(msg, users)
+      let results = cmd.runCommand(msg, users, socket.lastMessaged)
       // Checks if the results are an array, meaning it has multiple paramaters to sort through
       if(typeof(results) == 'object'){
         // Client Only
@@ -44,24 +50,22 @@ io.on('connection', (socket) => {
           io.to(socket.user).emit('command', socket.user, results)
         // Whisper
         } else if(results[0] == 'whisper'){
-          lastMessaged = results[1]
-          io.to(lastMessaged).emit('whisper', socket.user, results[2])
-          io.to(socket.user).emit('whisper', `To ${lastMessaged}`, results[2])
-          // LEFT OFF HERE
+          socket.lastMessaged = results[1]
+          io.to(socket.lastMessaged).emit('whisper', socket.user, results[2])
+          io.to(socket.user).emit('whisper', `To ${socket.lastMessaged}`, results[2])
+          // Reply
         } else if(results[0] == 'reply'){
-          if(!lastMessaged) io.to(socket.user).emit('command', socket.user, `Must type out full whisper command unless you're replying to someone.`)
-          else {
-            io.to(lastMessaged).emit('whisper', socket.user, results[1])
-            io.to(socket.user).emit('whisper', `To ${lastMessaged}`, results[1])
-          }
+          io.to(socket.lastMessaged).emit('whisper', socket.user, results[1])
+          io.to(socket.user).emit('whisper', `To ${socket.lastMessaged}`, results[1])
         }
-      }
-      else {
-        io.emit('command', socket.user, results)
-      }
+        // Command
+      } else io.emit('command', socket.user, results)
       // Message
     } else io.emit('chat message', socket.user, msg)
   })
+
+  // Updates lastMessaged
+  socket.on('last-messaged', (name) => socket.lastMessaged = name)
 
   // Is Typing
   socket.on('typing', (msg) => {
