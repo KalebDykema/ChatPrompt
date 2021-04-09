@@ -28,13 +28,12 @@ io.on('connection', (socket) => {
     socket.user = name.replace(/ /g, '-')
     socket.join(socket.user);
     users.push(socket.user)
-    console.log(users)
     io.emit('new user', socket.user)
     io.to(socket.user).emit('command', socket.user, ['client', 'Type /help or / for commands.'])
   })
 
   // Chat Message
-  socket.on('chat message', (name, msg) => {
+  socket.on('chat message', (msg) => {
     // Commands
     if(msg.charAt(0) == '/'){
       let results = cmd.runCommand(msg, users)
@@ -42,31 +41,31 @@ io.on('connection', (socket) => {
       if(typeof(results) == 'object'){
         // Client Only
         if(results[0] == 'client'){
-          io.to(socket.user).emit('command', name, results)
+          io.to(socket.user).emit('command', socket.user, results)
         // Whisper
         } else if(results[0] == 'whisper'){
           lastMessaged = results[1]
-          io.to(lastMessaged).emit('whisper', name, results[2])
+          io.to(lastMessaged).emit('whisper', socket.user, results[2])
           io.to(socket.user).emit('whisper', `To ${lastMessaged}`, results[2])
           // LEFT OFF HERE
         } else if(results[0] == 'reply'){
-          if(!lastMessaged) io.to(socket.user).emit('command', name, `Must type out full whisper command unless you're replying to someone.`)
+          if(!lastMessaged) io.to(socket.user).emit('command', socket.user, `Must type out full whisper command unless you're replying to someone.`)
           else {
-            io.to(lastMessaged).emit('whisper', name, results[1])
+            io.to(lastMessaged).emit('whisper', socket.user, results[1])
             io.to(socket.user).emit('whisper', `To ${lastMessaged}`, results[1])
           }
         }
       }
       else {
-        io.emit('command', name, results)
+        io.emit('command', socket.user, results)
       }
       // Message
-    } else io.emit('chat message', name, msg)
+    } else io.emit('chat message', socket.user, msg)
   })
 
   // Is Typing
-  socket.on('typing', (name, msg) => {
-    io.emit('typing', name, msg)
+  socket.on('typing', (msg) => {
+    io.emit('typing', socket.user, msg)
   })
 })
 

@@ -9,7 +9,7 @@ let name = 'N/A'
 // Looks to see if the user is typing and emits that to the server
 function emitTypingIfUserIsTyping(){
   if(ui.nameForm.style.display == 'none'){ 
-    socket.emit('typing', name, ui.messageInput.value)
+    socket.emit('typing', ui.messageInput.value)
   }
 }
 
@@ -25,7 +25,7 @@ document.onkeydown = function(e){
   // Looks if Enter is clicked and then saves a chosen name to a local variable
   if(e.key == 'Enter' && ui.nameInput.value.trim() != ''){
     e.preventDefault()
-    name = ui.nameInput.value.trim()
+    name = ui.nameInput.value.trim().replace(/ /g, '-')
     ui.nameInput.value = ''
     localCmds.checkForAndRunLocalCommand('/clear', ui)
     socket.emit('new user', name)
@@ -39,7 +39,7 @@ document.onkeydown = function(e){
     e.preventDefault()
     // Makes sure the input is not a command for the local client
     if(ui.messageInput.value.trim().charAt(0) != '/' || !localCmds.checkForAndRunLocalCommand(ui.messageInput.value.trim(), ui)){
-      socket.emit('chat message', name, ui.messageInput.value.trim())
+      socket.emit('chat message', ui.messageInput.value.trim())
     }
     ui.messageInput.value = '';
   }
