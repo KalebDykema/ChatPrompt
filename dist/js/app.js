@@ -1,5 +1,5 @@
 import * as ui from './uictrl.js'
-import * as localCmds from './localcommands/localcommands.js'
+import * as localCmds from './localcommands/localcommandsctrl.js'
 
 // Socket Object
 const socket = io()

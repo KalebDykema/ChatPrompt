@@ -14,5 +14,6 @@ const cmdDescs = {
   'roll or r': 'Roll a number of dice and choose the type of dice. Two examples are 2d6 or d20.',
   'tableflip': 'Flip a table.',
   'unfliptable': 'Be nice and turn the table back over.',
-  'whisper or w': 'Send a private message to a user.',
+  'whisper or w': 'Send a private message to a user by typing /w name your message. You can reply to a user by simply not typing their name, just type /w your message.',
+  'whosonline': 'Shows how many users are online and what their names are.'
 }
