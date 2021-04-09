@@ -6,8 +6,9 @@
   Lennyface pops up when a 1 is rolled on the roller
   /whosonline - shows everyone online
 */
-const diceRoller = require('./roll.js')
-const messager = require('./whisper.js')
+const roll = require('./roll.js')
+const whisper = require('./whisper.js')
+const whosOnline = require('./whosonline.js')
 
 function runCommand(cmd, users, lastMessaged){
   // Splits the command up into the first word and then after the first space
@@ -30,12 +31,13 @@ function runCommand(cmd, users, lastMessaged){
 // Commands
 const cmds = {
   'lennyface': () => '( ͡° ͜ʖ ͡°)',
-  'r': (rollCmd) => diceRoller.rollDice(rollCmd.toLowerCase()),
-  'roll': (rollCmd) => diceRoller.rollDice(rollCmd.toLowerCase()),
+  'r': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),
+  'roll': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),
   'tableflip': () => '(╯°□°）╯︵ ┻━┻',
   'unfliptable': () => '┬─┬ ノ( ゜-゜ノ)',
-  'w': (recipientAndMessage, users, lastMessaged) => messager.whisper(recipientAndMessage, users, lastMessaged),
-  'whisper': (recipientAndMessage, users, lastMessaged) => messager.whisper(recipientAndMessage, users, lastMessaged),
+  'w': (recipientAndMessage, users, lastMessaged) => whisper.whisper(recipientAndMessage, users, lastMessaged),
+  'whisper': (recipientAndMessage, users, lastMessaged) => whisper.whisper(recipientAndMessage, users, lastMessaged),
+  'whosonline': (secondCmd, users) => whosOnline.whosOnline(secondCmd, users)
 }
 
 module.exports.runCommand = runCommand
