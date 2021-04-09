@@ -3,7 +3,7 @@ let express = require('express')
 let app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-const cmd = require('./commands/commands.js')
+const cmd = require('./commands/commandsctrl.js')
 
 // Server Variables
 let users = []

@@ -1,5 +1,4 @@
 /* Command Ideas
-  /w noname - reply to whoever whispered to you last
   /changename - change name
   /uicolor - change uicolor on client
   /color - change color of your messages on server
@@ -7,8 +6,8 @@
   Lennyface pops up when a 1 is rolled on the roller
   /whosonline - shows everyone online
 */
-const diceRoller = require('./diceroller.js')
-const messager = require('./messager.js')
+const diceRoller = require('./roll.js')
+const messager = require('./whisper.js')
 
 function runCommand(cmd, users, lastMessaged){
   // Splits the command up into the first word and then after the first space
