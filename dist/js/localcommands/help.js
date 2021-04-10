@@ -8,6 +8,7 @@ export function showCommands(ui){
 
 // Command Descriptions that are printed when using the help command
 const cmdDescs = {
+  'changename': 'Change your name.',
   'clear': 'Clear the message log.',
   'help or /': 'Prints descriptions for all commands. You must know this since you typed it to get here.',
   'lennyface': 'Prints a lennyface.',
