@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
   // New User
   socket.on('new user', (name) => {
     // Gets rid of spaces in the name and replaces them with a dash, adds the users to the user array
-    socket.user = name.replace(/ /g, '-')
+    socket.user = name.trim().replace(/ /g, '-')
     socket.join(socket.user);
     users.push(socket.user)
 
@@ -48,8 +48,15 @@ io.on('connection', (socket) => {
         // Client Only
         if(results[0] == 'client'){
           io.to(socket.user).emit('client-command', results[1])
-        // Whisper
-        } else if(results[0] == 'whisper'){
+          // Name-Change
+        } else if(results[0] == 'name-change'){
+          const oldName = socket.user
+          socket.user = results[1].trim().replace(/ /g, '-')
+          io.emit('name-change', oldName, socket.user)
+          // Just emits typing to get rid of the old message
+          io.emit('typing', oldName, '')
+          // Whisper
+        }else if(results[0] == 'whisper'){
           socket.lastMessaged = results[1]
           io.to(socket.lastMessaged).emit('whisper', socket.user, results[2])
           io.to(socket.user).emit('whisper', `To ${socket.lastMessaged}`, results[2])
@@ -68,9 +75,7 @@ io.on('connection', (socket) => {
   socket.on('last-messaged', (name) => socket.lastMessaged = name)
 
   // Is Typing
-  socket.on('typing', (msg) => {
-    io.emit('typing', socket.user, msg)
-  })
+  socket.on('typing', (msg) => io.emit('typing', socket.user, msg))
 })
 
 // Tell the server to run on port 3000

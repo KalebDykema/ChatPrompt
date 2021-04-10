@@ -3,7 +3,6 @@
   /uicolor - change uicolor on client
   /color - change color of your messages on server
   /type - where all message strings will be displayed sequentially, think an iterating for loop that prints the next character and then waits for 100 ms or something; each character prints one at a time
-  Lennyface pops up when a 1 is rolled on the roller
 */
 const roll = require('./roll.js')
 const whisper = require('./whisper.js')
@@ -29,6 +28,7 @@ function runCommand(cmd, users, lastMessaged){
 
 // Commands
 const cmds = {
+  'changename': (secondCmd) => ['name-change', secondCmd],
   'lennyface': () => '( ͡° ͜ʖ ͡°)',
   'r': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),
   'roll': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),

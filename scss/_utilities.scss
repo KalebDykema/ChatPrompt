@@ -37,8 +37,8 @@
   color: $main-color;
 }
 
-// Command Results
-.cmd{
+// When a user changes their name
+.name-change{
   @include message-template;
   color: $yellow-color;
 }

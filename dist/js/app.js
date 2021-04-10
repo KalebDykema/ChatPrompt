@@ -3,11 +3,12 @@ import * as localCmds from './localcommands/localcommandsctrl.js'
 
 // Socket Object
 const socket = io()
-// Local Name Variable
+
+// Local Name Variables
 let name = 'N/A'
 
 // Looks to see if the user is typing and emits that to the server
-function emitTypingIfUserIsTyping(){
+function emitTypingIfChatIsDisplayed(){
   if(ui.nameForm.style.display == 'none'){ 
     socket.emit('typing', ui.messageInput.value)
   }
@@ -44,12 +45,12 @@ document.onkeydown = function(e){
     ui.messageInput.value = '';
   }
 
-  emitTypingIfUserIsTyping()
+  emitTypingIfChatIsDisplayed()
 }
 
 // Key Up Listener
 document.onkeyup = function(){
-  emitTypingIfUserIsTyping()
+  emitTypingIfChatIsDisplayed()
 }
 
 // On New User Socket Received
@@ -84,12 +85,19 @@ socket.on('whisper', function(otherPersonName, msg){
   socket.emit('last-messaged', otherPersonName)
 })
 
+// On Name Change Socket Received
+socket.on('name-change', function(oldName, newName){
+  checkForAndRemoveTypingMessage()
+  name = newName
+  ui.addNewMessage('pre', 'name-change', `${oldName} has changed their name to ${newName}`)
+})
+
 // On Typing Socket Received
 socket.on('typing', function(name, msg) {
   // If the user doesn't already have a typing message, creates one and displays it in the DOM
   if(!ui.messages.querySelector(`.typing.${name}`) && msg != ''){
     ui.addNewMessage('p', `typing ${name}`, `${name} is typing`)
-    // If the user's message field is now empty, removes their typing message form the DOM 
+    // If the user's message field is now empty, removes their typing message from the DOM 
   } else if(ui.messages.querySelector(`.typing.${name}`) && msg == '') {
     ui.messages.querySelector(`.typing.${name}`).remove()
   }
