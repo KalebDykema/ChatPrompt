@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
       if(typeof(results) == 'object'){
         // Client Only
         if(results[0] == 'client'){
-          io.to(socket.user).emit('command', socket.user, results)
+          io.to(socket.user).emit('client-command', results[1])
         // Whisper
         } else if(results[0] == 'whisper'){
           socket.lastMessaged = results[1]
@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
           io.to(socket.user).emit('whisper', `To ${socket.lastMessaged}`, results[1])
         }
         // Command
-      } else io.emit('command', socket.user, results)
+      } else io.emit('chat message', socket.user, results)
       // Message
     } else io.emit('chat message', socket.user, msg)
   })

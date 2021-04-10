@@ -71,13 +71,10 @@ socket.on('chat message', function(name, msg) {
   ui.addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
 })
 
-// On Command Socket Received
-socket.on('command', function(name, results) {
+// On Client Command Socket Received
+socket.on('client-command', function(results) {
   checkForAndRemoveTypingMessage()
-  if(results[0] == 'client'){
-    ui.addNewMessage('p', 'client', results[1])
-    // Create the message element and display it to the dom
-  } else ui.addNewMessage('pre', 'cmd', '> ' + name + ': ' + results)
+  ui.addNewMessage('p', 'client', results)
 })
 
 // On Whisper Socket Received
