@@ -29,14 +29,16 @@ function runCommand(cmd, users, lastMessaged){
 // Commands
 const cmds = {
   'changename': (name) => changeName.changeName(name),
+  'cn': (name) => changeName.changeName(name),
   'lennyface': () => '( ͡° ͜ʖ ͡°)',
+  'online': (secondCmd, users) => whosOnline.whosOnline(secondCmd, users),
   'r': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),
   'roll': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),
   'tableflip': () => '(╯°□°）╯︵ ┻━┻',
   'unfliptable': () => '┬─┬ ノ( ゜-゜ノ)',
   'w': (recipientAndMessage, users, lastMessaged) => whisper.whisper(recipientAndMessage, users, lastMessaged),
   'whisper': (recipientAndMessage, users, lastMessaged) => whisper.whisper(recipientAndMessage, users, lastMessaged),
-  'whosonline': (secondCmd, users) => whosOnline.whosOnline(secondCmd, users)
+  'whosonline': (secondCmd, users) => whosOnline.whosOnline(secondCmd, users),
 }
 
 module.exports.runCommand = runCommand

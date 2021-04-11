@@ -8,9 +8,9 @@ export function showCommands(ui){
 
 // Command Descriptions that are printed when using the help command
 const cmdDescs = {
-  'changename': 'Change your name.',
-  'changeuicolor': 'Change the color of your UI with a hexcode or valid HTML color name.',
-  'clear': 'Clear the message log.',
+  'changename or cn': 'Change your name.',
+  'changeuicolor or uicolor': 'Change the color of your UI with a hexcode or valid HTML color name.',
+  'clear or clr': 'Clear the message log.',
   'colors': 'Prints all valid HTML color names in their respective color.',
   'help or /': 'Prints descriptions for all commands. You must know this since you typed it to get here.',
   'lennyface': 'Prints a lennyface.',
@@ -18,5 +18,5 @@ const cmdDescs = {
   'tableflip': 'Flip a table.',
   'unfliptable': 'Be nice and turn the table back over.',
   'whisper or w': 'Send a private message to a user by typing /w name your message. You can reply to a user by simply not typing their name, just type /w your message.',
-  'whosonline': 'Shows how many users are online and what their names are.'
+  'whosonline or online': 'Shows how many users are online and what their names are.'
 }
