@@ -105,3 +105,8 @@ socket.on('typing', function(name, msg) {
     ui.messages.querySelector(`.typing.${name}`).remove()
   }
 })
+
+// On Name in Use Received
+socket.on('name-in-use', function(){
+  ui.showNameInUse()
+})

@@ -11,6 +11,12 @@
     color: $main-color;
     caret-color: $main-color;
   }
+
+  // Name In Use
+  #name-in-use{
+    display: none;
+    color: red;
+  }
 }
 
 // Chat History

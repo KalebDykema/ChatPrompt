@@ -8,6 +8,8 @@ const cmd = require('./commands/commandsctrl.js')
 // Server Variables
 let users = []
 
+let usersLowerCased
+
 // Sends the HTML, CSS, and JS files to the client
 app.use('/css', express.static(process.cwd() + '/dist/css'));
 app.use('/js', express.static(process.cwd() + '/dist/js'));
@@ -28,16 +30,24 @@ io.on('connection', (socket) => {
 
   // New User
   socket.on('new user', (name) => {
-    // Gets rid of spaces in the name and replaces them with a dash, adds the users to the user array
-    socket.user = name.trim().replace(/ /g, '-')
-    socket.join(socket.user);
-    users.push(socket.user)
+    let username = name.toString().trim().replace(/ /g, '-')
+    usersLowerCased = users.map(user => user.toLowerCase())
 
-    socket.lastMessaged = ''
-    socket.join(socket.lastMessaged)
-    
-    io.emit('new user', socket.user)
-    io.to(socket.user).emit('client-command', 'Type /help or / for commands.')
+    // Make sure name is not already being used
+    if(usersLowerCased.includes(username.toLowerCase())){
+      io.to(socket.user).emit('name-in-use')
+    } else {
+      // Gets rid of spaces in the name and replaces them with a dash, adds the users to the user array
+      socket.user = name.trim().replace(/ /g, '-')
+      socket.join(socket.user);
+      users.push(socket.user)
+
+      socket.lastMessaged = ''
+      socket.join(socket.lastMessaged)
+      
+      io.emit('new user', socket.user)
+      io.to(socket.user).emit('client-command', 'Type /help or / for commands.')
+    }
   })
 
   // Chat Message

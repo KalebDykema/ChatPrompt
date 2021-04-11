@@ -1,6 +1,7 @@
 // DOM Objects
 export let nameForm = document.getElementById('enter-name')
 export let nameInput = document.getElementById('input-name')
+export let nameInUse = document.getElementById('name-in-use')
 export let messages = document.getElementById('chat-history')
 export let messageForm = document.getElementById('send-message')
 export let messageInput = document.getElementById('input-message')
@@ -36,4 +37,9 @@ export function checkForAndRemoveTypingMessage(){
   if(messages.querySelectorAll('.typing') == true){
     messages.querySelector(`.${name}`).remove()
   }
+}
+
+// Shows name in use
+export function showNameInUse(){
+  nameInUse.style.display = 'block'
 }
