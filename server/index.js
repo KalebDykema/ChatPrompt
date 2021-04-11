@@ -20,8 +20,10 @@ io.on('connection', (socket) => {
   // Disconnect
   socket.on('disconnect', () => {
     // Emit a disconnect message and remove them from the user array
-    io.emit('user disconnected', socket.user)
-    users = users.filter(e => e !== socket.user)
+    if(socket.user != null){
+      io.emit('user disconnected', socket.user)
+      users = users.filter(e => e !== socket.user)
+    }
   })
 
   // New User
