@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   // Disconnect
   socket.on('disconnect', () => {
-    // Emit a disconnect message and remove them from the user array
+    // Emit a disconnect message and remove them from the user array, but only if they have a name
     if(socket.user != null){
       io.emit('user disconnected', socket.user)
       users = users.filter(e => e !== socket.user)

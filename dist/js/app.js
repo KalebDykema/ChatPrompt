@@ -16,27 +16,35 @@ function emitTypingIfChatIsDisplayed(){
 
 // Key Down Listener
 document.onkeydown = function(e){
-  // Looks if Enter is clicked and then saves a chosen name to a local variable
-  if(e.key == 'Enter' && ui.nameInput.value.trim() != ''){
-    e.preventDefault()
-    name = ui.nameInput.value.trim().replace(/ /g, '-')
-    ui.nameInput.value = ''
-    localCmds.checkForAndRunLocalCommand('/clear', ui)
-    socket.emit('new user', name)
+  // If the user is not focused on an input, then focuses on the relevant one
+  if(ui.nameInput.style.display == '' && document.activeElement != ui.nameInput) ui.nameInput.focus()
+  else if(ui.messageInput.style.display == '' && document.activeElement != ui.messageInput) ui.messageInput.focus()
 
-    // Gets rid of the name form and displays the messages and message form
-    ui.nameForm.style.display = 'none'
-    ui.messages.style.display = 'block'
-    ui.messageForm.style.display = 'flex'
-    ui.messageInput.focus()
-    // Looks if Enter is clicked and then emits a message to the server
-  } else if(e.key == 'Enter' && ui.messageInput.value.trim() != ''){
-    e.preventDefault()
-    // Makes sure the input is not a command for the local client
-    if(ui.messageInput.value.trim().charAt(0) != '/' || !localCmds.checkForAndRunLocalCommand(ui.messageInput.value.trim(), ui)){
-      socket.emit('chat message', ui.messageInput.value.trim())
+  // If the key is enter, allows for multiple things to occur
+  if(e.key == 'Enter') {
+    // If the nameInput has a value and is selected, sets that as the name and displays the messages and message input
+    if(ui.nameInput.value.trim() != '' && document.activeElement == ui.nameInput){
+      e.preventDefault()
+      name = ui.nameInput.value.trim().replace(/ /g, '-')
+      ui.nameInput.value = ''
+      localCmds.checkForAndRunLocalCommand('/clear', ui)
+      socket.emit('new user', name)
+
+      // Gets rid of the name form and displays the messages and message form
+      ui.nameForm.style.display = 'none'
+      ui.messages.style.display = 'block'
+      ui.messageForm.style.display = 'flex'
+      ui.messageInput.focus()
+      // If the messageInput has a value and is selected, emits a message to the server
+    } else if(ui.messageInput.value.trim() != ''&& document.activeElement == ui.messageInput){
+      e.preventDefault()
+      // Makes sure the input is not a command for the local client. If it is, run it. If not, send it to the server
+      if(ui.messageInput.value.trim().charAt(0) != '/' || !localCmds.checkForAndRunLocalCommand(ui.messageInput.value.trim(), ui)){
+        socket.emit('chat message', ui.messageInput.value.trim())
+      }
+      // Reset the messageInput
+      ui.messageInput.value = '';
     }
-    ui.messageInput.value = '';
   }
 
   emitTypingIfChatIsDisplayed()
