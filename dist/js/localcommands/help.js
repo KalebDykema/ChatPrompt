@@ -11,6 +11,7 @@ const cmdDescs = {
   'changename': 'Change your name.',
   'changeuicolor': 'Change the color of your UI with a hexcode or valid HTML color name.',
   'clear': 'Clear the message log.',
+  'colors': 'Prints all valid HTML color names in their respective color.',
   'help or /': 'Prints descriptions for all commands. You must know this since you typed it to get here.',
   'lennyface': 'Prints a lennyface.',
   'roll or r': 'Roll a number of dice and choose the type of dice. Two examples are 2d6 or d20.',

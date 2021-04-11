@@ -13,6 +13,7 @@ function appendTypingMessages(){
     })
   }
 }
+
 // Adds new message to chat log
 export function addNewMessage(element, classes, text){
   let item = document.createElement(element)
@@ -23,9 +24,16 @@ export function addNewMessage(element, classes, text){
   messages.scrollTo(0, messages.scrollHeight)
 }
 
+// Adds new element to chat log
+export function addNewElement(element){
+  messages.appendChild(element)
+  appendTypingMessages()
+  messages.scrollTo(0, messages.scrollHeight)
+}
+
 // Checks if there's a typing message and remove it
 export function checkForAndRemoveTypingMessage(){
-  if(ui.messages.querySelectorAll('.typing') == true){
-    ui.messages.querySelector(`.${name}`).remove()
+  if(messages.querySelectorAll('.typing') == true){
+    messages.querySelector(`.${name}`).remove()
   }
 }

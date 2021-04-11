@@ -1,5 +1,5 @@
 import * as help from './help.js'
-import * as changeuicolor from './changeuicolor.js'
+import * as color from './colorcommands.js'
 
 // Checks to make sure this a command for the local machine and not the server
 export function checkForAndRunLocalCommand(cmd, ui){
@@ -34,5 +34,6 @@ const localCmds = {
     }
   },
   'help': (ui) => help.showCommands(ui),
-  'changeuicolor': (ui, secondCmd) => changeuicolor.changeUIColor(ui, secondCmd)
+  'changeuicolor': (ui, secondCmd) => color.changeUIColor(ui, secondCmd),
+  'colors': (ui) => color.showHTMLColors(ui)
 }

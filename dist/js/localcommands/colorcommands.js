@@ -24,6 +24,24 @@ export function changeUIColor(ui, color){
   }
 }
 
+// Prints the HTML colors to the DOM in the respective styling
+export function showHTMLColors(ui){
+  // 'p', 'client',
+  let colorsMessage = document.createElement('pre');
+  colorsMessage.classList = 'client'
+  // let colorsMessage = ''
+  CSS_COLOR_NAMES.forEach(color => {
+    let colorSpan = document.createElement('span')
+    colorSpan.textContent= `${color}   `
+    colorSpan.style.color = color
+    if(color == 'Black'){
+      colorSpan.style.textShadow = '1px 1px white, -1px -1px white, 1px -1px white, -1px 1px white';
+    }
+    colorsMessage.appendChild(colorSpan)
+  })
+  ui.addNewElement(colorsMessage)
+}
+
 // Lighten or darken color with a negative value
 function lightenColor(color, percent) {
   let num = parseInt(color.substring(1) ,16),

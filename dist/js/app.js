@@ -62,7 +62,7 @@ socket.on('user disconnected', function(user){
 
 // On Chat Message Socket Received
 socket.on('chat message', function(name, msg) {
-  ui.checkForAndRemoveTypingMessage()
+  ui.checkForAndRemoveTypingMessage(ui)
   ui.addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
 })
 
