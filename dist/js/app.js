@@ -32,6 +32,7 @@ document.onkeydown = function(e){
 
       // Gets rid of the name form and displays the messages and message form
       ui.nameForm.style.display = 'none'
+      ui.nameInput.style.display = 'none'
       ui.messages.style.display = 'block'
       ui.messageForm.style.display = 'flex'
       ui.messageInput.focus()
