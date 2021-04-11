@@ -1,7 +1,7 @@
 import * as ui from './uictrl.js'
 import * as localCmds from './localcommands/localcommandsctrl.js'
 
-// Socket Object
+// Socket Objects
 const socket = io()
 
 // Local Name Variables
@@ -11,13 +11,6 @@ let name = 'N/A'
 function emitTypingIfChatIsDisplayed(){
   if(ui.nameForm.style.display == 'none'){ 
     socket.emit('typing', ui.messageInput.value)
-  }
-}
-
-// Checks if there's a typing message and remove it
-function checkForAndRemoveTypingMessage(){
-  if(ui.messages.querySelectorAll('.typing') == true){
-    ui.messages.querySelector(`.${name}`).remove()
   }
 }
 
@@ -35,6 +28,7 @@ document.onkeydown = function(e){
     ui.nameForm.style.display = 'none'
     ui.messages.style.display = 'block'
     ui.messageForm.style.display = 'flex'
+    ui.messageInput.focus()
     // Looks if Enter is clicked and then emits a message to the server
   } else if(e.key == 'Enter' && ui.messageInput.value.trim() != ''){
     e.preventDefault()
@@ -68,26 +62,26 @@ socket.on('user disconnected', function(user){
 
 // On Chat Message Socket Received
 socket.on('chat message', function(name, msg) {
-  checkForAndRemoveTypingMessage()
+  ui.checkForAndRemoveTypingMessage()
   ui.addNewMessage('pre', 'message', '> ' + name + ': ' + msg)
 })
 
 // On Client Command Socket Received
 socket.on('client-command', function(results) {
-  checkForAndRemoveTypingMessage()
+  ui.checkForAndRemoveTypingMessage()
   ui.addNewMessage('p', 'client', results)
 })
 
 // On Whisper Socket Received
 socket.on('whisper', function(otherPersonName, msg){
-  checkForAndRemoveTypingMessage()
+  ui.checkForAndRemoveTypingMessage()
   ui.addNewMessage('pre', 'whisper', '> ' + otherPersonName + ': ' + msg)
   socket.emit('last-messaged', otherPersonName)
 })
 
 // On Name Change Socket Received
 socket.on('name-change', function(oldName, newName){
-  checkForAndRemoveTypingMessage()
+  ui.checkForAndRemoveTypingMessage()
   name = newName
   ui.addNewMessage('pre', 'name-change', `${oldName} has changed their name to ${newName}`)
 })

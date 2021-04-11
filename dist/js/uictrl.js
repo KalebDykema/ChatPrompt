@@ -5,7 +5,6 @@ export let messages = document.getElementById('chat-history')
 export let messageForm = document.getElementById('send-message')
 export let messageInput = document.getElementById('input-message')
 
-// General Functions
 // If there's any typing messages from other users, push them under the new user message
 function appendTypingMessages(){
   if(messages.querySelectorAll('.typing')){
@@ -22,4 +21,11 @@ export function addNewMessage(element, classes, text){
   messages.appendChild(item)
   appendTypingMessages()
   messages.scrollTo(0, messages.scrollHeight)
+}
+
+// Checks if there's a typing message and remove it
+export function checkForAndRemoveTypingMessage(){
+  if(ui.messages.querySelectorAll('.typing') == true){
+    ui.messages.querySelector(`.${name}`).remove()
+  }
 }
