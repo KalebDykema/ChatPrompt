@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
           // Name-Change
         } else if(results[0] == 'name-change'){
           const oldName = socket.user
-          socket.user = results[1].trim().replace(/ /g, '-')
+          socket.user = results[1]
           io.emit('name-change', oldName, socket.user)
           // Just emits typing to get rid of the old message
           io.emit('typing', oldName, '')

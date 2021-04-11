@@ -6,6 +6,7 @@
 const roll = require('./roll.js')
 const whisper = require('./whisper.js')
 const whosOnline = require('./whosonline.js')
+const changeName = require('./changename.js')
 
 function runCommand(cmd, users, lastMessaged){
   // Splits the command up into the first word and then after the first space
@@ -27,7 +28,7 @@ function runCommand(cmd, users, lastMessaged){
 
 // Commands
 const cmds = {
-  'changename': (secondCmd) => ['name-change', secondCmd],
+  'changename': (name) => changeName.changeName(name),
   'lennyface': () => '( ͡° ͜ʖ ͡°)',
   'r': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),
   'roll': (rollCmd) => roll.rollDice(rollCmd.toLowerCase()),
