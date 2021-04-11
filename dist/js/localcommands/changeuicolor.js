@@ -186,7 +186,7 @@ const CSS_COLOR_NAMES = [
   'YellowGreen',
 ]
 
-const CSS_COLOR_NAMES_UPPERCASED = CSS_COLOR_NAMES.map(color => color.toUpperCase());
+const CSS_COLOR_NAMES_UPPERCASED = CSS_COLOR_NAMES.map(color => color.toUpperCase())
 
 const CSS_COLORS_AND_VALUES = { 
   ALICEBLUE: '#F0F8FF',
@@ -337,4 +337,4 @@ const CSS_COLORS_AND_VALUES = {
   WHITESMOKE: '#F5F5F5',
   YELLOW: '#FFFF00',
   YELLOWGREEN: '#9ACD32' 
-};
+}
