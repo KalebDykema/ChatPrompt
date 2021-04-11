@@ -14,7 +14,7 @@ function rollDice(rollCmd){
     return `rolling 1d${die} (${result})`
     // If it starts with a number and has a d after it, rolls that many die
   } else if(parseInt(roll.charAt(0))){
-    numberOfDice = parseInt(roll.charAt(0))
+    numberOfDice = parseInt(roll.substring(0, roll.indexOf('d')))
     die = parseInt(roll.substring(roll.indexOf('d')+1))
     for (i = 0; i < numberOfDice; i++) {
       rolls[i] = Math.round(Math.random() * (die - 1) + 1)
@@ -26,5 +26,7 @@ function rollDice(rollCmd){
     // If there's no roll command
   } else return ['client ', 'must include number of dice and/or type of dice, such as 2d6 or d20']
 }
+
+console.log(rollDice('22d21'))
 
 module.exports.rollDice = rollDice;
