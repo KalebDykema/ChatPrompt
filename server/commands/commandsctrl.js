@@ -1,5 +1,5 @@
 /* Command Ideas
-  /usercolor - change color of your messages on server
+  /changemessagecolor - change color of your messages on server
   /type - where all message strings will be displayed sequentially, think an iterating for loop that prints the next character and then waits for 100 ms or something; each character prints one at a time
 */
 const roll = require('./roll.js')
