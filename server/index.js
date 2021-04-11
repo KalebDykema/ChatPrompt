@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
     socket.join(socket.lastMessaged)
     
     io.emit('new user', socket.user)
-    io.to(socket.user).emit('command', socket.user, ['client', 'Type /help or / for commands.'])
+    io.to(socket.user).emit('client-command', 'Type /help or / for commands.')
   })
 
   // Chat Message
