@@ -6,6 +6,7 @@ const socket = io()
 
 // Local Name Variables
 let name = 'N/A'
+let disconnected = false;
 
 // Looks to see if the user is typing and emits that to the server
 function emitTypingIfChatIsDisplayed(){
@@ -109,4 +110,23 @@ socket.on('typing', function(name, msg) {
 // On Name in Use Received
 socket.on('name-in-use', function(){
   ui.showNameInUse()
+})
+
+
+// If unable to connect to the server
+socket.on('disconnect', (reason) => {
+  disconnected = true
+  if (reason === 'io server disconnect') {
+    socket.connect();
+  }
+  ui.addNewMessage('p', 'disconnected', 'Connection issue')
+});
+
+// On a successful reconnection
+socket.on('connect', () => {
+  if(disconnected){
+    disconnected = false
+    ui.addNewMessage('p', 'reconnected', 'Reconnected')
+    socket.emit('new user', name)
+  }
 })

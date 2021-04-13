@@ -48,3 +48,15 @@
   @include message-template;
   color: $complement-color-light;
 }
+
+// Disconnection message
+.disconnected{
+  @include message-template;
+  color: red;
+}
+
+// Disconnection message
+.reconnected{
+  @include message-template;
+  color: $main-color-light;
+}
