@@ -59,11 +59,15 @@ io.on('connection', (socket) => {
       if(typeof(results) == 'object'){
         // Client Only
         if(results[0] == 'client'){
-          io.to(socket.user).emit('client-command', results[1])
+          console.log(socket.id)
+          io.to(socket.id).emit('client-command', results[1])
           // Name-Change
         } else if(results[0] == 'name-change'){
+          // Change name and update in users array
           const oldName = socket.user
           socket.user = results[1]
+          users[users.indexOf(oldName)] = results[1]
+
           io.emit('name-change', oldName, socket.user)
           // Just emits typing to get rid of the old message
           io.emit('typing', oldName, '')
@@ -71,11 +75,11 @@ io.on('connection', (socket) => {
         }else if(results[0] == 'whisper'){
           socket.lastMessaged = results[1]
           io.to(socket.lastMessaged).emit('whisper', socket.user, results[2])
-          io.to(socket.user).emit('whisper', `To ${socket.lastMessaged}`, results[2])
+          io.to(socket.id).emit('whisper', `To ${socket.lastMessaged}`, results[2])
           // Reply
         } else if(results[0] == 'reply'){
           io.to(socket.lastMessaged).emit('whisper', socket.user, results[1])
-          io.to(socket.user).emit('whisper', `To ${socket.lastMessaged}`, results[1])
+          io.to(socket.id).emit('whisper', `To ${socket.lastMessaged}`, results[1])
         }
         // Command
       } else io.emit('chat message', socket.user, results)
