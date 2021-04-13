@@ -16,12 +16,12 @@ function emitTypingIfChatIsDisplayed(){
 
 // Key Down Listener
 document.onkeydown = function(e){
-  // If the user is not focused on an input, then focuses on the relevant one
-  if(ui.nameInput.style.display == '' && document.activeElement != ui.nameInput) ui.nameInput.focus()
-  else if(ui.messageInput.style.display == '' && document.activeElement != ui.messageInput) ui.messageInput.focus()
-
   // If the key is enter, allows for multiple things to occur
   if(e.key == 'Enter') {
+    // If the user is not focused on an input, then focuses on the relevant one
+    if(ui.nameInput.style.display == '' && document.activeElement != ui.nameInput) ui.nameInput.focus()
+    else if(ui.messageInput.style.display == '' && document.activeElement != ui.messageInput) ui.messageInput.focus()
+
     // If the nameInput has a value and is selected, sets that as the name and displays the messages and message input
     if(ui.nameInput.value.trim() != '' && document.activeElement == ui.nameInput){
       e.preventDefault()
