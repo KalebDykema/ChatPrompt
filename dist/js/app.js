@@ -4,8 +4,9 @@ import * as localCmds from './localcommands/localcommandsctrl.js'
 // Socket Objects
 const socket = io()
 
-// Local Name Variables
+// Local Variables
 let name = 'N/A'
+let invalidName = false;
 let disconnected = false;
 
 // Looks to see if the user is typing and emits that to the server
@@ -26,17 +27,27 @@ document.onkeydown = function(e){
     // If the nameInput has a value and is selected, sets that as the name and displays the messages and message input
     if(ui.nameInput.value.trim() != '' && document.activeElement == ui.nameInput){
       e.preventDefault()
-      name = ui.nameInput.value.trim().replace(/ /g, '-')
-      ui.nameInput.value = ''
-      localCmds.checkForAndRunLocalCommand('/clear', ui)
+
+      console.log(invalidName)
+
+      name = ui.nameInput.value.trim()
       socket.emit('new user', name)
+      // name = ui.nameInput.value.trim().replace(/ /g, '-')
+      // ui.nameInput.value = ''
+      // localCmds.checkForAndRunLocalCommand('/clear', ui)
+      // socket.emit('new user', name)
 
       // Gets rid of the name form and displays the messages and message form
-      ui.nameForm.style.display = 'none'
-      ui.nameInput.style.display = 'none'
-      ui.messages.style.display = 'block'
-      ui.messageForm.style.display = 'flex'
-      ui.messageInput.focus()
+      if(!invalidName){
+        console.log(invalidName)
+        ui.nameInput.value = ''
+        localCmds.checkForAndRunLocalCommand('/clear', ui)
+        ui.nameForm.style.display = 'none'
+        ui.nameInput.style.display = 'none'
+        ui.messages.style.display = 'block'
+        ui.messageForm.style.display = 'flex'
+        ui.messageInput.focus()
+      }
       // If the messageInput has a value and is selected, emits a message to the server
     } else if(ui.messageInput.value.trim() != ''&& document.activeElement == ui.messageInput){
       e.preventDefault()
@@ -110,8 +121,14 @@ socket.on('typing', function(name, msg) {
 // On Name in Use Received
 socket.on('name-in-use', function(){
   ui.showNameInUse()
+  invalidName = true
 })
 
+// On Invalid Name Received
+socket.on('invalid-name', function(){
+  ui.showInvalidName()
+  invalidName = true
+})
 
 // If unable to connect to the server
 socket.on('disconnect', (reason) => {
@@ -120,7 +137,7 @@ socket.on('disconnect', (reason) => {
     socket.connect();
   }
   ui.addNewMessage('p', 'disconnected', 'Connection issue')
-});
+})
 
 // On a successful reconnection
 socket.on('connect', () => {

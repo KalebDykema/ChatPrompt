@@ -2,6 +2,7 @@
 export let nameForm = document.getElementById('enter-name')
 export let nameInput = document.getElementById('input-name')
 export let nameInUse = document.getElementById('name-in-use')
+export let invalidName = document.getElementById('invalid-name')
 export let messages = document.getElementById('chat-history')
 export let messageForm = document.getElementById('send-message')
 export let messageInput = document.getElementById('input-message')
@@ -42,4 +43,9 @@ export function checkForAndRemoveTypingMessage(){
 // Shows name in use
 export function showNameInUse(){
   nameInUse.style.display = 'block'
+}
+
+// Shows invalid name
+export function showInvalidName(){
+  invalidName.style.display = 'block'
 }
