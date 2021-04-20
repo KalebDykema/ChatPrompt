@@ -1,6 +1,5 @@
 // Server Objects
 let express = require('express')
-const { invalidName } = require('../dist/js/uictrl.js')
 let app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
