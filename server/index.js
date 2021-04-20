@@ -26,9 +26,13 @@ function removeUser(socket){
   usernamesLowerCased = usernames.map(username => username.toLowerCase())
 }
 
-// Sends the HTML, CSS, and JS files to the client
+// Sends the client side files to the client
 app.use('/css', express.static(process.cwd() + '/dist/css'));
 app.use('/js', express.static(process.cwd() + '/dist/js'));
+app.use('/favicon.ico', express.static(process.cwd() + 'favicon.ico'));
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(process.cwd() + '/dist/favicon.ico')
+})
 app.get('/', (req, res) => {
   res.sendFile(process.cwd() + '/dist/index.html')
 })
