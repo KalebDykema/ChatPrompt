@@ -28,14 +28,9 @@ document.onkeydown = function(e){
     if(ui.nameInput.value.trim() != '' && document.activeElement == ui.nameInput){
       e.preventDefault()
 
-      console.log(invalidName)
-
       name = ui.nameInput.value.trim()
       socket.emit('new user', name)
       // name = ui.nameInput.value.trim().replace(/ /g, '-')
-      // ui.nameInput.value = ''
-      // localCmds.checkForAndRunLocalCommand('/clear', ui)
-      // socket.emit('new user', name)
 
       // Gets rid of the name form and displays the messages and message form
       if(!invalidName){
@@ -126,8 +121,9 @@ socket.on('name-in-use', function(){
 
 // On Invalid Name Received
 socket.on('invalid-name', function(){
-  ui.showInvalidName()
   invalidName = true
+  console.log(invalidName)
+  ui.showInvalidName()
 })
 
 // If unable to connect to the server

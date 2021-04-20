@@ -29,7 +29,6 @@ function removeUser(socket){
 // Sends the client side files to the client
 app.use('/css', express.static(process.cwd() + '/dist/css'));
 app.use('/js', express.static(process.cwd() + '/dist/js'));
-app.use('/favicon.ico', express.static(process.cwd() + 'favicon.ico'));
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(process.cwd() + '/dist/favicon.ico')
 })
@@ -57,7 +56,7 @@ io.on('connection', (socket) => {
     // Make sure username doesn't have invalid characters
     for(i = 0; i < usernameLowerCased.length; i++){
       if(invalidCharacters.includes(usernameLowerCased.charAt(i))){
-        io.to(socket.user).emit('invalid-name')
+        io.to(socket.id).emit('invalid-name')
         invalidUsername = true
         console.log(invalidUsername)
         break 
